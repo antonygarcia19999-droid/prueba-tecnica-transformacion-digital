@@ -106,5 +106,5 @@ Indicador (KPI): Reducción del tiempo de procesamiento (de 8 horas a < 5 minuto
 
 Riesgo: Generación de falsos positivos por datos mal ingresados en el sistema origen. Mitigación: Incluir una etapa de pre-validación de calidad de datos antes de disparar las alertas a los coordinadores.
 
-Ejercicio 9 (Bonus) - Nota sobre la tabla matricula_log
+### Ejercicio 9 (Bonus) - Nota sobre la tabla matricula_log
 La tabla matricula_log no debe tener llave foránea hacia matricula porque su propósito es almacenar auditoría de registros eliminados. Si tuviera una restricción FK, al borrar la matrícula original en la tabla principal, el motor de BD impediría la eliminación o borraría también el registro del log en cascada, anulando el propósito de la auditoría.
