@@ -72,3 +72,38 @@ Se decidió manejar el control transaccional (`START TRANSACTION`, `COMMIT`, `RO
 2. **Consulta SQL de diagnóstico:**
    ```sql
    SELECT * FROM matricula WHERE id_curso = [ID_DEL_CURSO];
+
+Solución propuesta: Explicar que el curso no se puede borrar porque conserva historial de alumnos. La solución correcta es implementar un estado en la tabla curso (ej. inactivo o cerrado) para deshabilitarlo comercialmente sin perder integridad histórica.
+
+Lo que NO haría: Desactivar temporalmente las claves foráneas (SET FOREIGN_KEY_CHECKS = 0) para forzar el borrado. Riesgo: Genera huérfanos en la base de datos y corrompe la integridad referencial.
+
+Respuesta al usuario:
+
+"Hola [Nombre]. Entiendo la urgencia de depurar el catálogo para la operación de hoy. Sin embargo, el sistema bloquea la eliminación debido a que este curso ya cuenta con estudiantes matriculados en periodos anteriores. Eliminarlo directamente borraría la historia académica de esos alumnos. Para resolver tu necesidad hoy de forma segura, podemos cambiar el estado del curso a 'Inactivo' para que no vuelva a aparecer disponible para nuevas matrículas. Quedo atento a tu confirmación para proceder."
+
+Ejercicio 8 - Automatización de Proceso Manual
+a) Preguntas al dueño del proceso:
+
+¿Cuáles son las reglas exactas para considerar que dos horarios se cruzan? (Para modelar la lógica exacta en código/SQL).
+
+¿Con qué frecuencia o bajo qué disparador se necesita el reporte? (Para saber si automatizar por horario o por evento).
+
+¿Qué acciones toman los coordinadores tras recibir las inconsistencias? (Para evaluar si en lugar de correo se requiere un flujo de aprobación).
+
+b) Priorización:
+
+Automatizar primero: La validación de cruces e inconsistencias mediante consultas automáticas directamente en la base de datos.
+
+Dejar manual (por ahora): El envío final o la decisión de qué hacer con los estudiantes con cruces, dejando el criterio final en manos de los coordinadores.
+
+c) Propuesta técnica a alto nivel:
+En lugar de procesar archivos Excel sueltos, la base de datos debe ser la única fuente de la verdad. Se creará una Vista en MySQL o un proceso programado (mediante Python o Power Automate) que ejecute la validación cruzando las tablas matricula, curso y horario. Los resultados con inconsistencias se enviarán automáticamente por correo consolidado en HTML/Excel mediante un script o flujo automatizado.
+
+d) Indicadores y Riesgos:
+
+Indicador (KPI): Reducción del tiempo de procesamiento (de 8 horas a < 5 minutos) y Tasa de inconsistencias no detectadas (Meta: 0).
+
+Riesgo: Generación de falsos positivos por datos mal ingresados en el sistema origen. Mitigación: Incluir una etapa de pre-validación de calidad de datos antes de disparar las alertas a los coordinadores.
+
+Ejercicio 9 (Bonus) - Nota sobre la tabla matricula_log
+La tabla matricula_log no debe tener llave foránea hacia matricula porque su propósito es almacenar auditoría de registros eliminados. Si tuviera una restricción FK, al borrar la matrícula original en la tabla principal, el motor de BD impediría la eliminación o borraría también el registro del log en cascada, anulando el propósito de la auditoría.
