@@ -81,7 +81,8 @@ Respuesta al usuario:
 
 "Hola [Nombre]. Entiendo la urgencia de depurar el catálogo para la operación de hoy. Sin embargo, el sistema bloquea la eliminación debido a que este curso ya cuenta con estudiantes matriculados en periodos anteriores. Eliminarlo directamente borraría la historia académica de esos alumnos. Para resolver tu necesidad hoy de forma segura, podemos cambiar el estado del curso a 'Inactivo' para que no vuelva a aparecer disponible para nuevas matrículas. Quedo atento a tu confirmación para proceder."
 
-Ejercicio 8 - Automatización de Proceso Manual
+### Ejercicio 8 - Automatización de Proceso Manual
+
 a) Preguntas al dueño del proceso:
 
 ¿Cuáles son las reglas exactas para considerar que dos horarios se cruzan? (Para modelar la lógica exacta en código/SQL).
